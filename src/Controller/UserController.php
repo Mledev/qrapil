@@ -87,4 +87,12 @@ class UserController extends Controller
 
         return $this->redirectToRoute('user_index');
     }
+
+    /**
+     * @Route("/{id}/api", name="user_api", methods="GET")
+     */
+    public function api($id): Response
+    {
+        return $this->json(['user'=>$id]);
+    }
 }
