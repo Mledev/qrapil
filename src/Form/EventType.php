@@ -3,9 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Entity\Location;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Validator\Tests\Fixtures\Entity;
 
 class EventType extends AbstractType
 {
@@ -14,8 +18,7 @@ class EventType extends AbstractType
         $builder
             ->add('name')
             ->add('date')
-            ->add('location')
-        ;
+            ->add('Location', EntityType::class, array('class' => Location::class));
     }
 
     public function configureOptions(OptionsResolver $resolver)
