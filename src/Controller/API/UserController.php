@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 /**
  * @Route("/api")
  */
@@ -33,14 +32,20 @@ class UserController extends Controller
         $token = 0;
         $connexion = json_decode($connexion, false , 2);
         $user = $userRepository->findOneBy(array('email' => $connexion->{'Email'}));
+        if (!isset($user)){
 
-        if ($connexion->{'Email'} === $user->getEmail()){
+            return new JsonResponse(array('error' => 'Email invalid'), 404);
+        }else{
             if($connexion->{'Password'} === $user->getPassword()){
                 $token = $user->getToken();
+            }else{
+                return new JsonResponse(array('error' => 'Password invalid'), 404);
             }
+
+            return new JsonResponse(array('token' => $token));
         }
 
-        return new JsonResponse(array('token' => $token));
+
     }
 
     /**
@@ -52,12 +57,17 @@ class UserController extends Controller
         $connexion = $request->getContent();
         $token = json_decode($connexion, false , 2);
         $user = $userRepository->findOneBy(array('token' => $token->{'Token'}));
-        $mail = $user->getEmail();
-        $newToken =  md5($mail.random_bytes(20));
-        $user->setToken($newToken);
-        $entityManager->flush();
+        if (!isset($user)) {
 
-        return new JsonResponse(array('Token' => $newToken));
+            return new JsonResponse(array('error' => 'Token invalid'), 404);
+        }else{
+            $mail = $user->getEmail();
+            $newToken =  md5($mail.random_bytes(20));
+            $user->setToken($newToken);
+            $entityManager->flush();
+
+            return new JsonResponse(array('Token' => $newToken));
+        }
     }
 
     /**
@@ -69,19 +79,21 @@ class UserController extends Controller
         $connexion = $request->query->get('json');
         $token = json_decode($connexion, false , 2);
         $currentdate = date('c');
-        $advert = $userRepository->findOneBy(array('token' => $token->{'token'}));
+        $user = $userRepository->findOneBy(array('token' => $token->{'token'}));
+        if (!isset($user))
+        {
 
+            return new JsonResponse(array('error' => 'Token invalid'), 404);
+        }else{
+            foreach ($events as $event)
+            {
+                $dateevent = $event->getDate()->format('Y-m-d H:i:s');
+                $endevent = strtotime("+1 day", strtotime($dateevent));
+                if ($currentdate >= $dateevent && $currentdate <= date("Y-m-d", $endevent)) {
 
-        /*foreach ($users as $user) {
-            if ($token->{'token'} === $user->getToken()) {
-                foreach ($events as $event){
-                    $dateevent = $event->getDate();
-                    if($currentdate >= $dateevent && $currentdate <= $dateevent->add(new DateInterval('P1H'))){
-                        return new JsonResponse(array('date' => $event->getDate()));
-                    }
+                    return new JsonResponse(array('date' => $event->getDate()->format('Y-m-d H:i:s'), 'location' => $event->getLocation()->getDescription()));
                 }
             }
-        }*/
-        return new JsonResponse(array('error' => $advert->getToken()));
+        }
     }
 }
