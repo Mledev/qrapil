@@ -102,7 +102,64 @@ $ bin/console doctrine:migrations:migrate
 }
 ```
 
-<!--Bonsoir-->
+<!--##	POST /api/checkIn
+
+### Input
+
+* QRCodeData string 40
+* date string ISO 8601
+* beaconCollection \[int\]
+* Token string 40
+
+```json
+{
+	"QRCodeData" : "OK",
+	"date": "",
+	"beaconCollection":
+		[
+			12,
+			44, 
+			128
+		]
+	},
+	"Token": "1234567890123456789012345678901234567890"
+}
+```
+
+### Return
+
+* String status
+	* HTTP status 200 "OK"
+	* HTTP status 404 "KO"
+
+200
+```json
+{
+	"response" : "OK"
+}
+```
+
+404
+```json
+{
+	"response" : "KO"
+}
+```
+
+
+# Web
+
+## GET /
+
+Select a location. Posts to /getQRCode
+
+## POST /getQRCode
+
+### input
+
+* location string
+
+Displays a QRCode relevent to the location and refreshes every 30 seconds.-->
 
 
 
