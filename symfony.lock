@@ -11,6 +11,9 @@
             "ref": "b50f8aa321cc40c380dda7605aa5cef66f476802"
         }
     },
+    "bacon/bacon-qr-code": {
+        "version": "1.0.3"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -80,14 +83,35 @@
     "egulias/email-validator": {
         "version": "2.1.4"
     },
+    "endroid/installer": {
+        "version": "1.0.3"
+    },
+    "endroid/qr-code": {
+        "version": "3.2.9"
+    },
+    "endroid/qr-code-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "b9fcbe18b537c63bf61d3c3be8116a00a85c8e2e"
+        }
+    },
     "fig/link-util": {
         "version": "1.0.0"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "khanamiryan/qrcode-detector-decoder": {
+        "version": "1"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
+    },
+    "myclabs/php-enum": {
+        "version": "1.5.2"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",

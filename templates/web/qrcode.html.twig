@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}QR Code{% endblock %}
+
+{% block stylesheets %}
+	<style>body{text-align:center}img{max-width:100%}</style>
+{% endblock %}
+
+{% block body %}
+	<img src="{{ qr_code_path(message) }}" alt="{{ description }}">
+	<p>{{ description }}</p>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        (function() {
+            var interval = setInterval(function() {
+                axios.post('{{ path("location_qrcode") }}', {
+                    location: {{ id }}
+                })
+                .then(function(response) {
+                    console.log(response);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+            }, 30000);
+        })();
+    </script>
+{% endblock %}
