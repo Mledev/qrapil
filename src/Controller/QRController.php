@@ -24,19 +24,34 @@ class QRController extends Controller
     /**
      * @Route("/getQRCode", name="location_qrcode", methods="POST")
      */
-    public function QR(Request $request, LocationRepository $locationRepository): Response
+    public function getQRCode(Request $request, LocationRepository $locationRepository): Response
     {
 		$id = (int)$request->request->get('location');
 		$location = $locationRepository->find($id);
-
+		
 		if(is_null($location) || !is_int($id)) {
 			return new Response('Invalid request.', 404, ['HTTP/1.1 404 Not Found']);
 		}
 
         return $this->render('web/qrcode.html.twig', [
-            'id' => $id,
+			'id' => $id,
 			'message' => $location->getQrcode(),
 			'description' => $location->getDescription()
     	]);
     }
+
+    /**
+     * @Route("/refreshQR", name="location_refresh", methods="POST")
+     */
+	public function refreshQR(Request $request, LocationRepository $locationRepository): Response
+	{
+		$id = (int)$request->request->get('location');
+		$location = $locationRepository->find($id);
+		
+		if(is_null($location) || !is_int($id)) {
+			return new Response('Invalid request.', 404, ['HTTP/1.1 404 Not Found']);
+		}
+
+		return new Response(uniqid($location->getQrcode()), 200);
+	}
 }

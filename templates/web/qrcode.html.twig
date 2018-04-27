@@ -7,23 +7,26 @@
 {% endblock %}
 
 {% block body %}
-	<img src="{{ qr_code_path(message) }}" alt="{{ description }}">
-	<p>{{ description }}</p>
+	<img src="{{ qr_code_path(message) }}" alt="{{ description }}" id="image">
+	<a href="{{ path('location_select') }}">Retour</a>
 {% endblock %}
 
 {% block javascripts %}
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         (function() {
+			var image = document.getElementById("image");
             var interval = setInterval(function() {
-                axios.post('{{ path("location_qrcode") }}', {
-                    location: {{ id }}
-                })
+                axios.post('{{ path("location_refresh") }}', 'location={{ id }}')
                 .then(function(response) {
-                    console.log(response);
+					if(response.status === 200) {
+						image.setAttribute("src", "/qr-code/"+response.data+".png");
+					} else {
+						throw Error(response.status);
+					}					
                 })
-                .catch(function(error) {
-                    console.log(error);
+                .catch(function() {
+                    window.location.href = "{{ path('location_select') }}";
                 });
             }, 30000);
         })();
