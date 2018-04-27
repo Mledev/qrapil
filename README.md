@@ -8,10 +8,10 @@
   
 # Install 
 
-Run the following commands in a terminal, where you want to clone Nanoe:
+Run the following commands in a terminal, where you want to clone qrapil:
     
 ```sh
-$ git clone git@github.com:Mledev/qrapil.git
+$ git clone https://github.com/Mledev/qrapil.git
 $ composer install
 ```
 
