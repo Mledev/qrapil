@@ -35,7 +35,7 @@ class QRController extends Controller
 
         return $this->render('web/qrcode.html.twig', [
 		'id' => $id,
-		'message' => $location->getQrcode(),
+		'message' => uniqid($location->getQrcode()),
 		'description' => $location->getDescription()
     	]);
     }
