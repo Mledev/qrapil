@@ -51,7 +51,7 @@ $ bin/console doctrine:migrations:migrate
 
 ```json
 {
-	"token": "1234567890123456789012345678901234567890"
+	"Token": "1234567890123456789012345678901234567890"
 }
 ```
 
@@ -63,7 +63,7 @@ $ bin/console doctrine:migrations:migrate
 
 ```json
 {
-	"token": "1234567890123456789012345678901234567890"
+	"Token": "1234567890123456789012345678901234567890"
 }
 ```
 
@@ -73,7 +73,7 @@ $ bin/console doctrine:migrations:migrate
 
 ```json
 {
-	"token": "1234567890123456789012345678901234567890"
+	"Token": "1234567890123456789012345678901234567890"
 }
 ```
 
@@ -85,7 +85,7 @@ $ bin/console doctrine:migrations:migrate
 
 ```json
 {
-	"token": "1234567890123456789012345678901234567890"
+	"Token": "1234567890123456789012345678901234567890"
 }
 ```
 
@@ -97,8 +97,8 @@ $ bin/console doctrine:migrations:migrate
 
 ```json
 {
-	"date": "",
-	"location": "Salle 7"
+	"Date": "",
+	"Location": "Salle 7"
 }
 ```
 
@@ -135,14 +135,14 @@ $ bin/console doctrine:migrations:migrate
 200
 ```json
 {
-	"response" : "OK"
+	"Response" : "OK"
 }
 ```
 
 404
 ```json
 {
-	"response" : "KO"
+	"Response" : "KO"
 }
 ```
 
