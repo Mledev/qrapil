@@ -27,19 +27,19 @@ class UserController extends Controller
      */
     public function login(Request $request, UserRepository $userRepository): Response
     {
-        $users = $userRepository->findAll();
         $connexion = $request->getContent();
-        $token = 0;
         $connexion = json_decode($connexion, false , 2);
-        $user = $userRepository->findOneBy(array('email' => $connexion->{'Email'}));
+        $user = $userRepository->findOneBy(array('email' => $connexion->{'email'}));
+        $password = hash('sha512', $connexion->{'password'});
+
         if (!isset($user)){
 
             return new JsonResponse(array('error' => 'Email invalid'), 404);
         }else{
-            if($connexion->{'Password'} === $user->getPassword()){
+            if($password === $user->getPassword()){
                 $token = $user->getToken();
             }else{
-                return new JsonResponse(array('error' => 'Password invalid'), 404);
+                return new JsonResponse(array('error' => 'Password invalid'.$password.' and not '.$user->getPassword()), 404);
             }
 
             return new JsonResponse(array('token' => $token));
@@ -49,24 +49,24 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/refreshToken", name="refresh_token", methods="POST")
+     * @Route("/refreshtoken", name="refresh_token", methods="POST")
      */
     public function refreshToken(Request $request, UserRepository $userRepository): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $connexion = $request->getContent();
         $token = json_decode($connexion, false , 2);
-        $user = $userRepository->findOneBy(array('token' => $token->{'Token'}));
+        $user = $userRepository->findOneBy(array('token' => $token->{'token'}));
         if (!isset($user)) {
 
             return new JsonResponse(array('error' => 'Token invalid'), 404);
-        }else{
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
             $mail = $user->getEmail();
             $newToken =  md5($mail.random_bytes(20));
             $user->setToken($newToken);
             $entityManager->flush();
 
-            return new JsonResponse(array('Token' => $newToken));
+            return new JsonResponse(array('token' => $newToken));
         }
     }
 

@@ -31,6 +31,9 @@ class UserController extends Controller
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $password = $user->getPassword();
+        $password = hash('sha512', $password);
+        $user->setPassword($password);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -61,6 +64,9 @@ class UserController extends Controller
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $password = $user->getPassword();
+        $password = hash('sha512', $password);
+        $user->setPassword($password);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
