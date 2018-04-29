@@ -80,6 +80,7 @@ class UserController extends Controller
         $token = json_decode($connexion, false , 2);
         $currentdate = date('c');
         $user = $userRepository->findOneBy(array('token' => $token->{'token'}));
+
         if (!isset($user))
         {
 
@@ -95,5 +96,40 @@ class UserController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * @Route("/checkin", name="checkin", methods="POST")
+     */
+    public function checkin(Request $request, UserRepository $userRepository, EventRepository $eventRepository, LocationRepository $locationRepository): Response
+    {
+        $json = $request->getContent();
+        $data = json_decode($json);
+
+        $beacon = $data->{'beaconCollection'};
+        $qrCodeStatus = $data->{'QRCodeData'};
+        $location = $locationRepository->findOneBy(array('beacon' => $beacon));
+        $event = $eventRepository->findOneBy(array('location' => $location));
+        $currentdate = $data->{'date'};
+        $dateevent = $event->getDate()->format('Y-m-d H:i:s');
+        $user = $userRepository->findOneBy(array('token' => $data->{'Token'}));
+        $validdate = false;
+
+        $endevent = strtotime("+1 day", strtotime($dateevent));
+
+        if ($currentdate >= $dateevent && $currentdate <= date("Y-m-d", $endevent)) {
+
+            $validdate = true;
+        }
+
+        if (!isset($user))
+        {
+
+            return new JsonResponse(array('response' => 'KO'), 404);
+        }
+        if ($beacon && $event && $qrCodeStatus && $validdate == true) {
+            return new JsonResponse(array('response' => 'OK'));
+        }
+        return new JsonResponse(array('response' => 'KO'), 404);
     }
 }
