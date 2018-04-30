@@ -10,7 +10,6 @@
             <tr>
                 <th>Id</th>
                 <th>Beacon</th>
-                <th>Identifier</th>
                 <th>Qrcode</th>
                 <th>Description</th>
                 <th>actions</th>
@@ -21,7 +20,6 @@
             <tr>
                 <td>{{ location.id }}</td>
                 <td>{{ location.beacon }}</td>
-                <td>{{ location.identifier }}</td>
                 <td>{{ location.qrcode }}</td>
                 <td>{{ location.description }}</td>
                 <td>
@@ -31,7 +29,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

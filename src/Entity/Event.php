@@ -73,7 +73,12 @@ class Event
         return $this;
     }
 
-    public function __toString() {
-            return $this->id;
+    public function __toString()
+	{
+		if(is_null($this->id)) {
+		    return 'NULL';
+		}
+
+        return (string)$this->id;
     }
 }

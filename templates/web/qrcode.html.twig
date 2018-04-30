@@ -7,8 +7,10 @@
 {% endblock %}
 
 {% block body %}
-	<img src="{{ qr_code_path(message) }}" alt="{{ description }}" id="image">
-	<a href="{{ path('location_select') }}">Retour</a>
+	<img src="{{ qr_code_path(location.qrcode) }}" alt="{{ location.description }}" id="image">
+	<p>
+		<a href="{{ path('location_select') }}">Retour</a>
+	</p>
 {% endblock %}
 
 {% block javascripts %}
@@ -23,10 +25,10 @@
 						image.setAttribute("src", "/qr-code/"+response.data+".png");
 					} else {
 						throw Error(response.status);
-					}					
+					}
                 })
                 .catch(function() {
-                    window.location.href = "{{ path('location_select') }}";
+                   window.location.href = "{{ path('location_select') }}";
                 });
             }, 30000);
         })();

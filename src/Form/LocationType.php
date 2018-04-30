@@ -13,10 +13,8 @@ class LocationType extends AbstractType
     {
         $builder
             ->add('beacon')
-            ->add('identifier')
             ->add('qrcode')
-            ->add('description')
-        ;
+            ->add('description');
     }
 
     public function configureOptions(OptionsResolver $resolver)

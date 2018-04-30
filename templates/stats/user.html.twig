@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+	
+    <table class="table" style="text-align:center;">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Absent(e)</th>
+                <th>En retard</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for action in actions %}
+            <tr>
+		<td>{{ action.date|date('Y-m-d') }}</td>
+		<td>{{ (action.id == null) ? 'X' : '' }}</td>
+		<td>{{ (action.event_id and events[action.event_id]|date_modify('+15 min') < action.event_id) ? 'X' : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="1">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('stats_index') }}">Retour</a>
+{% endblock %}

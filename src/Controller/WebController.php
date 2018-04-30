@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class QRController extends Controller
+class WebController extends Controller
 {
     /**
      * @Route("/", name="location_select", methods="GET")
@@ -26,32 +26,36 @@ class QRController extends Controller
      */
     public function getQRCode(Request $request, LocationRepository $locationRepository): Response
     {
-	$id = (int)$request->request->get('location');
-	$location = $locationRepository->find($id);
+		$id = (int)$request->request->get('location');
+		$location = $locationRepository->find($id);
 
-	if(is_null($location) || !is_int($id)) {
-		return new Response('Invalid request.', 404, ['HTTP/1.1 404 Not Found']);
-	}
+		if(!isset($location) || !is_int($id)) {
+			return new Response('Invalid request.', 404, ['HTTP/1.1 404 Not Found']);
+		}
 
-        return $this->render('web/qrcode.html.twig', [
-		'id' => $id,
-		'message' => uniqid($location->getQrcode()),
-		'description' => $location->getDescription()
-    	]);
+		return $this->render('web/qrcode.html.twig', [
+			'id' => $id,
+			'location' => $location
+		]);
     }
 
     /**
-     * @Route("/refreshQR", name="location_refresh", methods="POST")
+     * @Route("/refreshQR", name="location_refresh", methods="GET|POST")
      */
 	public function refreshQR(Request $request, LocationRepository $locationRepository): Response
 	{
 		$id = (int)$request->request->get('location');
 		$location = $locationRepository->find($id);
-		
-		if(is_null($location) || !is_int($id)) {
+
+		if(!is_int($id) || !isset($location)) {
 			return new Response('Invalid request.', 404, ['HTTP/1.1 404 Not Found']);
 		}
 
-		return new Response(uniqid($location->getQrcode()), 200);
+		$entityManager = $this->getDoctrine()->getManager();
+		$newQR = uniqid();
+        $location->setQrcode($newQR);
+        $entityManager->flush();
+
+		return new Response($newQR, 200);
 	}
 }

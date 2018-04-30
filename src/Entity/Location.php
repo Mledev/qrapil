@@ -22,11 +22,6 @@ class Location
     private $beacon;
 
     /**
-     * @ORM\Column(type="bigint")
-     */
-    private $identifier;
-
-    /**
      * @ORM\Column(type="string", length=40)
      */
     private $qrcode;
@@ -49,18 +44,6 @@ class Location
     public function setBeacon(int $beacon): self
     {
         $this->beacon = $beacon;
-
-        return $this;
-    }
-
-    public function getIdentifier(): ?int
-    {
-        return $this->identifier;
-    }
-
-    public function setIdentifier(int $identifier): self
-    {
-        $this->identifier = $identifier;
 
         return $this;
     }
@@ -88,7 +71,13 @@ class Location
 
         return $this;
     }
-    public function __toString() {
-        return $this->identifier;
+
+    public function __toString()
+	{
+		if(is_null($this->id)) {
+		    return 'NULL';
+		}
+
+        return (string)$this->id;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Backend;
 
 use App\Entity\Event;
 use App\Form\EventType;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/event")
+ * @Route("/backend/event")
  */
 class EventController extends Controller
 {
@@ -30,8 +30,9 @@ class EventController extends Controller
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
+	
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($event);
